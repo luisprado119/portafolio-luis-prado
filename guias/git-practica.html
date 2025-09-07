@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Final - Clonación y Contribución con Git | Luis Rafael Prado Quitero</title>
+    <meta name="description" content="Guía interactiva paso a paso para clonar repositorios y contribuir con cambios">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .tutorial-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .step-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            margin: var(--spacing-2xl) 0;
+            box-shadow: var(--shadow-md);
+            border-left: 5px solid var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #f8f8f2;
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            margin: var(--spacing-md) 0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-block::before {
+            content: "Terminal";
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+        }
+
+        .result-block {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent-color);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-lg);
+            margin: var(--spacing-md) 0;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .warning-block {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--secondary-color);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-lg);
+            margin: var(--spacing-md) 0;
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .success-block {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent-color);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-lg);
+            margin: var(--spacing-md) 0;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .interactive-demo {
+            background: var(--bg-secondary);
+            border: 2px dashed var(--primary-color);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            margin: var(--spacing-2xl) 0;
+            text-align: center;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-xl);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            font-size: var(--font-size-base);
+            margin: var(--spacing-sm);
+            transition: var(--transition);
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background: var(--text-secondary);
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            margin-bottom: var(--spacing-2xl);
+            transition: var(--transition);
+        }
+
+        .back-button:hover {
+            background: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .progress-bar {
+            background: var(--bg-secondary);
+            height: 8px;
+            border-radius: var(--radius-sm);
+            margin: var(--spacing-2xl) 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .hero h1 {
+            font-size: var(--font-size-4xl);
+            margin-bottom: var(--spacing-md);
+            color: var(--text-primary);
+        }
+
+        .hero p {
+            font-size: var(--font-size-lg);
+            color: var(--text-secondary);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .card {
+            background: var(--bg-card);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-icon {
+            font-size: var(--font-size-3xl);
+            margin-bottom: var(--spacing-sm);
+            color: var(--primary-color);
+        }
+
+        .card h3 {
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tutorial-container">
+        <a href="../index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Volver al Portafolio
+        </a>
+
+        <div class="hero">
+            <h1>🔄 Práctica Final: Clonación y Contribución con Git</h1>
+            <p>Guía interactiva paso a paso para clonar repositorios y contribuir con cambios</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="step-card" data-step="1">
+            <div class="step-number">1</div>
+            <h2>🎯 Objetivo de la Práctica</h2>
+            <p>En esta práctica aprenderás a:</p>
+            <ul>
+                <li>✅ Clonar un repositorio de otro usuario</li>
+                <li>✅ Modificar contenido localmente</li>
+                <li>✅ Trabajar en una rama separada</li>
+                <li>✅ Contribuir cambios mediante GitHub</li>
+                <li>✅ Crear Pull Requests</li>
+            </ul>
+
+            <div class="interactive-demo">
+                <h3>🎮 Simulación Interactiva</h3>
+                <p>Haz clic para simular el proceso completo:</p>
+                <button class="demo-button" onclick="simulateProcess()">
+                    <i class="fas fa-play"></i> Iniciar Simulación
+                </button>
+                <div id="simulationResult"></div>
+            </div>
+        </div>
+
+        <div class="step-card" data-step="2">
+            <div class="step-number">2</div>
+            <h2>📥 Paso 1: Clonación del Repositorio</h2>
+            <p>Primero, clonamos el repositorio del usuario original:</p>
+
+            <div class="code-block">
+                git clone git@github.com:usuario-original/repositorio.git
+            </div>
+
+            <div class="result-block">
+                <strong>✅ Resultado esperado:</strong><br>
+                <code>Cloning into 'repositorio'...<br>
+remote: Enumerating objects: 10, done.<br>
+remote: Counting objects: 100% (10/10), done.<br>
+remote: Compressing objects: 100% (6/6), done.<br>
+remote: Total 10 (delta 2), reused 8 (delta 1), pack-reused 0<br>
+Receiving objects: 100% (10/10), done.<br>
+Resolving deltas: 100% (2/2), done.</code>
+            </div>
+
+            <div class="warning-block">
+                <strong>⚠️ Nota importante:</strong> Asegúrate de tener configurada tu clave SSH o usar HTTPS según tu
+                configuración.
+            </div>
+        </div>
+
+        <div class="step-card" data-step="3">
+            <div class="step-number">3</div>
+            <h2>📁 Paso 2: Renombrar y Adaptar el Proyecto</h2>
+            <p>Renombramos el directorio para identificarlo mejor:</p>
+
+            <div class="code-block">
+                mv repositorio git-principal-jvh
+                cd git-principal-jvh
+            </div>
+
+            <div class="result-block">
+                <strong>✅ Resultado:</strong> Ahora estás dentro del directorio renombrado y listo para trabajar.
+            </div>
+
+            <div class="interactive-demo">
+                <h3>🔍 Verificar el Estado</h3>
+                <button class="demo-button" onclick="showGitStatus()">
+                    <i class="fas fa-info-circle"></i> Ver Estado del Repositorio
+                </button>
+                <div id="gitStatusResult"></div>
+            </div>
+        </div>
+
+        <div class="step-card" data-step="4">
+            <div class="step-number">4</div>
+            <h2>🌿 Paso 3: Crear Rama de Trabajo</h2>
+            <p>Es una buena práctica trabajar en una rama separada:</p>
+
+            <div class="code-block">
+                git checkout -b cambios
+            </div>
+
+            <div class="result-block">
+                <strong>✅ Resultado:</strong><br>
+                <code>Switched to a new branch 'cambios'</code>
+            </div>
+
+            <div class="success-block">
+                <strong>💡 Tip:</strong> Siempre crea una rama nueva para tus cambios. Esto mantiene el historial limpio
+                y facilita la revisión de código.
+            </div>
+        </div>
+
+        <div class="step-card" data-step="5">
+            <div class="step-number">5</div>
+            <h2>✏️ Paso 4: Modificar Contenido</h2>
+            <p>Editamos el archivo README.md usando Nano:</p>
+
+            <div class="code-block">
+                nano README.md
+            </div>
+
+            <div class="interactive-demo">
+                <h3>📝 Editor de Texto Simulado</h3>
+                <p>Simula la edición del archivo README.md:</p>
+                <textarea id="readmeEditor"
+                    style="width: 100%; height: 150px; padding: 1rem; border-radius: 10px; border: 1px solid #ddd;">
+# Proyecto Git Principal
+
+## Información del Ejercicio
+- **Estudiante:** Luis Rafael Prado Quitero
+- **Fecha:** 2024
+- **Objetivo:** Práctica de clonación y contribución
+
+## Cambios Realizados
+- Agregué mi información personal
+- Documenté el proceso de clonación
+- Incluí detalles del ejercicio
+                </textarea>
+                <br><br>
+                <button class="demo-button" onclick="saveChanges()">
+                    <i class="fas fa-save"></i> Guardar Cambios
+                </button>
+                <div id="saveResult"></div>
+            </div>
+        </div>
+
+        <div class="step-card" data-step="6">
+            <div class="step-number">6</div>
+            <h2>💾 Paso 5: Guardar y Hacer Commit</h2>
+            <p>Agregamos los cambios y creamos un commit:</p>
+
+            <div class="code-block">
+                git add README.md
+                git commit -m "feat: actualización de README con datos personales"
+            </div>
+
+            <div class="result-block">
+                <strong>✅ Resultado:</strong><br>
+                <code>[cambios 1a2b3c4] feat: actualización de README con datos personales<br>
+1 file changed, 5 insertions(+), 2 deletions(-)</code>
+            </div>
+
+            <div class="success-block">
+                <strong>🎉 ¡Excelente!</strong> Has creado tu primer commit en la rama de cambios.
+            </div>
+        </div>
+
+        <div class="step-card" data-step="7">
+            <div class="step-number">7</div>
+            <h2>🚀 Paso 6: Subir la Rama a GitHub</h2>
+            <p>Subimos nuestra rama al repositorio remoto:</p>
+
+            <div class="code-block">
+                git push origin cambios
+            </div>
+
+            <div class="result-block">
+                <strong>✅ Resultado:</strong><br>
+                <code>Enumerating objects: 5, done.<br>
+Counting objects: 100% (5/5), done.<br>
+Delta compression using up to 8 threads<br>
+Compressing objects: 100% (3/3), done.<br>
+Writing objects: 100% (3/3), 285 bytes | 285.00 KiB/s, done.<br>
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0<br>
+remote: Resolving deltas: 100% (1/1), completed with 1 delta(s)<br>
+To github.com:usuario-original/repositorio.git<br>
+* [new branch]      cambios -> cambios</code>
+            </div>
+        </div>
+
+        <div class="step-card" data-step="8">
+            <div class="step-number">8</div>
+            <h2>🔗 Paso 7: Crear Pull Request</h2>
+            <p>GitHub automáticamente detecta la nueva rama y ofrece crear un PR:</p>
+
+            <div class="interactive-demo">
+                <h3>📋 Simulación de Pull Request</h3>
+                <p>GitHub te mostrará un enlace como este:</p>
+                <div class="code-block">
+                    https://github.com/luisprado119/git-principal-jvh/pull/new/cambios
+                </div>
+
+                <button class="demo-button" onclick="createPullRequest()">
+                    <i class="fab fa-github"></i> Crear Pull Request
+                </button>
+                <div id="prResult"></div>
+            </div>
+
+            <div class="success-block">
+                <strong>🎊 ¡Felicidades!</strong> Has completado exitosamente la práctica de clonación y contribución
+                con Git.
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h2>📚 Resumen de lo Aprendido</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <span class="card-icon">📥</span>
+                    <h3>Clonación</h3>
+                    <p>Aprendiste a clonar repositorios de otros usuarios usando git clone.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🌿</span>
+                    <h3>Ramas</h3>
+                    <p>Creaste y trabajaste en ramas separadas para mantener el historial limpio.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">💾</span>
+                    <h3>Commits</h3>
+                    <p>Hiciste commits con mensajes descriptivos siguiendo buenas prácticas.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🔗</span>
+                    <h3>Pull Requests</h3>
+                    <p>Contribuiste cambios mediante Pull Requests para revisión colaborativa.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/animations.js"></script>
+    <script>
+        let currentStep = 0;
+        const totalSteps = 8;
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function simulateProcess() {
+            const result = document.getElementById('simulationResult');
+            result.innerHTML = '<div class="success-block">🎬 Simulación iniciada... Proceso completado exitosamente!</div>';
+            currentStep = totalSteps;
+            updateProgress();
+        }
+
+        function showGitStatus() {
+            const result = document.getElementById('gitStatusResult');
+            result.innerHTML = `
+                <div class="code-block">
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+                </div>
+            `;
+        }
+
+        function saveChanges() {
+            const result = document.getElementById('saveResult');
+            result.innerHTML = '<div class="success-block">✅ Cambios guardados exitosamente en README.md</div>';
+        }
+
+        function createPullRequest() {
+            const result = document.getElementById('prResult');
+            result.innerHTML = `
+                <div class="success-block">
+                    <strong>🎉 Pull Request Creado!</strong><br>
+                    <p>Tu PR ha sido enviado para revisión. El propietario del repositorio podrá:</p>
+                    <ul>
+                        <li>Revisar tus cambios</li>
+                        <li>Hacer comentarios</li>
+                        <li>Aceptar o rechazar el PR</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Intersection Observer para animar las tarjetas
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    const step = entry.target.getAttribute('data-step');
+                    if (step && parseInt(step) > currentStep) {
+                        currentStep = parseInt(step);
+                        updateProgress();
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Aplicar animaciones a las tarjetas
+        document.addEventListener('DOMContentLoaded', function () {
+            const stepCards = document.querySelectorAll('.step-card');
+            stepCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+
+            updateProgress();
+        });
+    </script>
+</body>
+
+</html>

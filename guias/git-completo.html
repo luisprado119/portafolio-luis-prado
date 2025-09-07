@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa de Git - Luis Rafael Prado Quitero</title>
+    <meta name="description"
+        content="Tutorial interactivo de Git con comandos esenciales, mejores prácticas y ejemplos prácticos">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .tutorial-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            margin: var(--spacing-2xl) 0;
+            box-shadow: var(--shadow-md);
+            border-left: 5px solid var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .section-icon {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #f8f8f2;
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            margin: var(--spacing-md) 0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-block::before {
+            content: "Terminal";
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+        }
+
+        .code-block.config::before {
+            content: "Configuración";
+            background: var(--accent-color);
+        }
+
+        .code-block.advanced::before {
+            content: "Avanzado";
+            background: var(--secondary-color);
+            color: #000;
+        }
+
+        .interactive-demo {
+            background: var(--bg-secondary);
+            border: 2px dashed var(--primary-color);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            margin: var(--spacing-2xl) 0;
+            text-align: center;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-xl);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            font-size: var(--font-size-base);
+            margin: var(--spacing-sm);
+            transition: var(--transition);
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .demo-button.success {
+            background: linear-gradient(135deg, var(--accent-color), #059669);
+        }
+
+        .demo-button.warning {
+            background: linear-gradient(135deg, var(--secondary-color), #d97706);
+            color: #000;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background: var(--text-secondary);
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            margin-bottom: var(--spacing-2xl);
+            transition: var(--transition);
+        }
+
+        .back-button:hover {
+            background: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .terminal-simulator {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            font-family: 'Courier New', monospace;
+            margin: var(--spacing-md) 0;
+            min-height: 100px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .terminal-simulator::before {
+            content: "Terminal Simulator";
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+        }
+
+        .typing-animation {
+            border-right: 2px solid var(--primary-color);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            50% {
+                border-color: var(--primary-color);
+            }
+
+            51%,
+            100% {
+                border-color: transparent;
+            }
+        }
+
+        .command-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .command-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            transition: var(--transition);
+        }
+
+        .command-card:hover {
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .command-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .command-syntax {
+            background: #1e1e1e;
+            color: #f8f8f2;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            font-family: 'Courier New', monospace;
+            margin: var(--spacing-sm) 0;
+        }
+
+        .command-description {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+
+        .workflow-step {
+            background: var(--bg-card);
+            border: 2px solid rgba(99, 102, 241, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin: var(--spacing-md) 0;
+            position: relative;
+        }
+
+        .workflow-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: var(--font-size-sm);
+        }
+
+        .workflow-step.active {
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin: var(--spacing-2xl) 0;
+            padding: var(--spacing-md);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .progress-step.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .progress-step.completed {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .quiz-container {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .quiz-question {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-md);
+            font-weight: 600;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+        }
+
+        .quiz-option {
+            background: var(--bg-card);
+            border: 2px solid rgba(99, 102, 241, 0.1);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--accent-color);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .quiz-option.incorrect {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .toc {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .toc h3 {
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc li {
+            margin: var(--spacing-sm) 0;
+        }
+
+        .toc a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .toc a:hover {
+            color: var(--primary-dark);
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .hero h1 {
+            font-size: var(--font-size-4xl);
+            margin-bottom: var(--spacing-md);
+            color: var(--text-primary);
+        }
+
+        .hero p {
+            font-size: var(--font-size-lg);
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tutorial-container">
+        <a href="../index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Volver al Portafolio
+        </a>
+
+        <div class="hero">
+            <h1>🔧 Guía Completa de Git para Linux</h1>
+            <p>Tutorial interactivo con comandos esenciales, mejores prácticas y ejemplos prácticos</p>
+        </div>
+
+        <div class="toc">
+            <h3>📋 Tabla de Contenidos</h3>
+            <ul>
+                <li><a href="#configuracion">🔧 Configuración Inicial</a></li>
+                <li><a href="#repositorios">📁 Crear y Clonar Repositorios</a></li>
+                <li><a href="#seguimiento">📄 Estado y Seguimiento de Archivos</a></li>
+                <li><a href="#ramas">🌳 Ramas y Fusión</a></li>
+                <li><a href="#historial">🔍 Historial y Diferencias</a></li>
+                <li><a href="#remoto">🌐 Conexión con GitHub/GitLab</a></li>
+                <li><a href="#ssh">🔐 Autenticación SSH</a></li>
+                <li><a href="#avanzado">🛠️ Comandos Avanzados</a></li>
+                <li><a href="#quiz">🧠 Quiz Final</a></li>
+            </ul>
+        </div>
+
+        <div class="section-card" id="configuracion">
+            <div class="section-icon">🔧</div>
+            <h2>Configuración Inicial en Linux</h2>
+            <p>Configuración básica de usuario y opciones específicas para Linux.</p>
+
+            <div class="command-grid">
+                <div class="command-card">
+                    <div class="command-title">Configuración Básica</div>
+                    <div class="command-syntax">git config --global user.name "Luis Rafael Prado"</div>
+                    <div class="command-description">Establece tu nombre de usuario globalmente</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Email</div>
+                    <div class="command-syntax">git config --global user.email "luisprado119@gmail.com"</div>
+                    <div class="command-description">Establece tu email globalmente</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Editor</div>
+                    <div class="command-syntax">git config --global core.editor "nano"</div>
+                    <div class="command-description">Configura tu editor preferido</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Rama Principal</div>
+                    <div class="command-syntax">git config --global init.defaultBranch main</div>
+                    <div class="command-description">Establece 'main' como rama principal</div>
+                </div>
+            </div>
+
+            <div class="interactive-demo">
+                <h3>🎮 Simulador de Configuración</h3>
+                <button class="demo-button" onclick="simulateConfig()">
+                    <i class="fas fa-cog"></i> Simular Configuración
+                </button>
+                <div class="terminal-simulator" id="configResult"></div>
+            </div>
+        </div>
+
+        <div class="section-card" id="repositorios">
+            <div class="section-icon">📁</div>
+            <h2>Crear y Clonar Repositorios</h2>
+            <p>Comandos para inicializar repositorios locales y clonar repositorios remotos.</p>
+
+            <div class="workflow-step" data-step="1">
+                <h4>Inicializar Repositorio</h4>
+                <div class="code-block">
+                    mkdir proyecto
+                    cd proyecto
+                    git init
+                </div>
+            </div>
+
+            <div class="workflow-step" data-step="2">
+                <h4>Clonar Repositorio</h4>
+                <div class="code-block">
+                    git clone &lt;url_del_repositorio&gt;
+                    git clone &lt;url&gt; &lt;nombre_directorio&gt; # Especificar nombre
+                </div>
+            </div>
+
+            <div class="interactive-demo">
+                <h3>🎮 Simulador de Clonación</h3>
+                <button class="demo-button" onclick="simulateClone()">
+                    <i class="fas fa-download"></i> Simular Clonación
+                </button>
+                <div class="terminal-simulator" id="cloneResult"></div>
+            </div>
+        </div>
+
+        <div class="section-card" id="seguimiento">
+            <div class="section-icon">📄</div>
+            <h2>Estado y Seguimiento de Archivos</h2>
+            <p>Comandos para gestionar el estado de archivos y crear commits.</p>
+
+            <div class="command-grid">
+                <div class="command-card">
+                    <div class="command-title">Ver Estado</div>
+                    <div class="command-syntax">git status</div>
+                    <div class="command-description">Muestra el estado actual del repositorio</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Agregar Archivos</div>
+                    <div class="command-syntax">git add archivo.txt</div>
+                    <div class="command-description">Agrega archivo específico al staging</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Agregar Todo</div>
+                    <div class="command-syntax">git add .</div>
+                    <div class="command-description">Agrega todos los archivos modificados</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Commit</div>
+                    <div class="command-syntax">git commit -m "mensaje"</div>
+                    <div class="command-description">Crea un commit con mensaje</div>
+                </div>
+            </div>
+
+            <div class="interactive-demo">
+                <h3>🎮 Simulador de Workflow</h3>
+                <button class="demo-button" onclick="simulateWorkflow()">
+                    <i class="fas fa-play"></i> Simular Workflow Completo
+                </button>
+                <div class="terminal-simulator" id="workflowResult"></div>
+            </div>
+        </div>
+
+        <div class="section-card" id="ramas">
+            <div class="section-icon">🌳</div>
+            <h2>Ramas y Fusión</h2>
+            <p>Gestión de ramas, creación, cambio y fusión de ramas.</p>
+
+            <div class="progress-indicator">
+                <div class="progress-step" id="step1">Crear Rama</div>
+                <div class="progress-step" id="step2">Cambiar Rama</div>
+                <div class="progress-step" id="step3">Trabajar</div>
+                <div class="progress-step" id="step4">Fusionar</div>
+            </div>
+
+            <div class="command-grid">
+                <div class="command-card">
+                    <div class="command-title">Listar Ramas</div>
+                    <div class="command-syntax">git branch</div>
+                    <div class="command-description">Muestra todas las ramas locales</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Crear Rama</div>
+                    <div class="command-syntax">git branch nueva-rama</div>
+                    <div class="command-description">Crea una nueva rama</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Cambiar Rama</div>
+                    <div class="command-syntax">git checkout nueva-rama</div>
+                    <div class="command-description">Cambia a la rama especificada</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Crear y Cambiar</div>
+                    <div class="command-syntax">git checkout -b nueva-rama</div>
+                    <div class="command-description">Crea y cambia a nueva rama</div>
+                </div>
+            </div>
+
+            <div class="interactive-demo">
+                <h3>🎮 Simulador de Ramas</h3>
+                <button class="demo-button" onclick="simulateBranching()">
+                    <i class="fas fa-code-branch"></i> Simular Gestión de Ramas
+                </button>
+                <div class="terminal-simulator" id="branchResult"></div>
+            </div>
+        </div>
+
+        <div class="section-card" id="historial">
+            <div class="section-icon">🔍</div>
+            <h2>Historial y Diferencias</h2>
+            <p>Comandos para explorar el historial del repositorio y ver diferencias.</p>
+
+            <div class="command-grid">
+                <div class="command-card">
+                    <div class="command-title">Ver Historial</div>
+                    <div class="command-syntax">git log</div>
+                    <div class="command-description">Muestra el historial de commits</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Historial Compacto</div>
+                    <div class="command-syntax">git log --oneline</div>
+                    <div class="command-description">Historial en una línea por commit</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Ver Diferencias</div>
+                    <div class="command-syntax">git diff</div>
+                    <div class="command-description">Muestra cambios no staged</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Diferencias Staged</div>
+                    <div class="command-syntax">git diff --staged</div>
+                    <div class="command-description">Muestra cambios en staging area</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card" id="remoto">
+            <div class="section-icon">🌐</div>
+            <h2>Conexión con GitHub/GitLab</h2>
+            <p>Gestión de repositorios remotos y sincronización.</p>
+
+            <div class="command-grid">
+                <div class="command-card">
+                    <div class="command-title">Agregar Remoto</div>
+                    <div class="command-syntax">git remote add origin &lt;url&gt;</div>
+                    <div class="command-description">Agrega un repositorio remoto</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Ver Remotos</div>
+                    <div class="command-syntax">git remote -v</div>
+                    <div class="command-description">Lista repositorios remotos</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Push</div>
+                    <div class="command-syntax">git push origin main</div>
+                    <div class="command-description">Sube cambios al remoto</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Pull</div>
+                    <div class="command-syntax">git pull origin main</div>
+                    <div class="command-description">Descarga cambios del remoto</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card" id="ssh">
+            <div class="section-icon">🔐</div>
+            <h2>Autenticación SSH en Linux</h2>
+            <p>Configuración de claves SSH para autenticación segura.</p>
+
+            <div class="workflow-step" data-step="1">
+                <h4>Generar Clave SSH</h4>
+                <div class="code-block">
+                    ssh-keygen -t ed25519 -C "luisprado119@gmail.com"
+                </div>
+            </div>
+
+            <div class="workflow-step" data-step="2">
+                <h4>Agregar al Agente SSH</h4>
+                <div class="code-block">
+                    eval "$(ssh-agent -s)"
+                    ssh-add ~/.ssh/id_ed25519
+                </div>
+            </div>
+
+            <div class="workflow-step" data-step="3">
+                <h4>Verificar Conexión</h4>
+                <div class="code-block">
+                    ssh -T git@github.com
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card" id="avanzado">
+            <div class="section-icon">🛠️</div>
+            <h2>Comandos Avanzados y Utilidades</h2>
+            <p>Comandos avanzados para situaciones específicas.</p>
+
+            <div class="command-grid">
+                <div class="command-card">
+                    <div class="command-title">Stash</div>
+                    <div class="command-syntax">git stash</div>
+                    <div class="command-description">Guarda cambios temporalmente</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Rebase</div>
+                    <div class="command-syntax">git rebase main</div>
+                    <div class="command-description">Reorganiza commits sobre main</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Bisect</div>
+                    <div class="command-syntax">git bisect start</div>
+                    <div class="command-description">Encuentra commits que introducen bugs</div>
+                </div>
+                <div class="command-card">
+                    <div class="command-title">Submodules</div>
+                    <div class="command-syntax">git submodule add &lt;url&gt;</div>
+                    <div class="command-description">Agrega un submódulo</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-container" id="quiz">
+            <h2>🧠 Quiz Final - Pon a Prueba tus Conocimientos</h2>
+
+            <div class="quiz-question" id="quizQuestion">
+                ¿Cuál es el comando correcto para crear una nueva rama llamada "feature" y cambiar a ella
+                inmediatamente?
+            </div>
+            <div class="quiz-options">
+                <div class="quiz-option" onclick="selectAnswer(this, false)">
+                    git branch feature && git checkout feature
+                </div>
+                <div class="quiz-option" onclick="selectAnswer(this, true)">
+                    git checkout -b feature
+                </div>
+                <div class="quiz-option" onclick="selectAnswer(this, false)">
+                    git new-branch feature
+                </div>
+                <div class="quiz-option" onclick="selectAnswer(this, false)">
+                    git create feature
+                </div>
+            </div>
+            <div id="quizResult"></div>
+
+            <div class="quiz-question" style="margin-top: 2rem;">
+                ¿Qué comando usas para ver los cambios que están en el staging area pero aún no han sido commiteados?
+            </div>
+            <div class="quiz-options">
+                <div class="quiz-option" onclick="selectAnswer2(this, false)">
+                    git diff
+                </div>
+                <div class="quiz-option" onclick="selectAnswer2(this, true)">
+                    git diff --staged
+                </div>
+                <div class="quiz-option" onclick="selectAnswer2(this, false)">
+                    git status --staged
+                </div>
+                <div class="quiz-option" onclick="selectAnswer2(this, false)">
+                    git show staged
+                </div>
+            </div>
+            <div id="quizResult2"></div>
+        </div>
+
+        <div class="section-card">
+            <h2>📋 Flujo de Trabajo Recomendado</h2>
+            <div class="workflow-step" data-step="1">
+                <h4>Antes de empezar</h4>
+                <div class="code-block">git pull</div>
+                <p>Actualiza tu rama local con los últimos cambios</p>
+            </div>
+
+            <div class="workflow-step" data-step="2">
+                <h4>Crear rama</h4>
+                <div class="code-block">git checkout -b feature/nueva-funcionalidad</div>
+                <p>Crea una rama descriptiva para tu nueva funcionalidad</p>
+            </div>
+
+            <div class="workflow-step" data-step="3">
+                <h4>Hacer commits</h4>
+                <div class="code-block">git add . && git commit -m "mensaje descriptivo"</div>
+                <p>Commits frecuentes con mensajes claros</p>
+            </div>
+
+            <div class="workflow-step" data-step="4">
+                <h4>Subir cambios</h4>
+                <div class="code-block">git push -u origin feature/nueva-funcionalidad</div>
+                <p>Sube tu rama al repositorio remoto</p>
+            </div>
+
+            <div class="workflow-step" data-step="5">
+                <h4>Crear Pull Request</h4>
+                <p>Usa la interfaz web de GitHub/GitLab para crear un PR</p>
+            </div>
+
+            <div class="workflow-step" data-step="6">
+                <h4>Después del merge</h4>
+                <div class="code-block">
+                    git checkout main && git pull && git branch -d feature/nueva-funcionalidad
+                </div>
+                <p>Limpia tu repositorio local después del merge</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/animations.js"></script>
+    <script>
+        function typeText(element, text, speed = 30) {
+            element.innerHTML = '';
+            element.classList.add('typing-animation');
+
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                    element.classList.remove('typing-animation');
+                }
+            }, speed);
+        }
+
+        function simulateConfig() {
+            const result = document.getElementById('configResult');
+            const configText = `$ git config --global user.name "Luis Rafael Prado"
+$ git config --global user.email "luisprado119@gmail.com"
+$ git config --global core.autocrlf input
+$ git config --global init.defaultBranch main
+$ git config --global core.editor "nano"
+$ git config --global pull.rebase false
+$ git config --global alias.graph "log --all --decorate --oneline --graph"
+
+✅ Configuración completada exitosamente!`;
+            typeText(result, configText);
+        }
+
+        function simulateClone() {
+            const result = document.getElementById('cloneResult');
+            const cloneText = `$ git clone https://github.com/usuario/repositorio.git
+Cloning into 'repositorio'...
+remote: Enumerating objects: 10, done.
+remote: Counting objects: 100% (10/10), done.
+remote: Compressing objects: 100% (6/6), done.
+remote: Total 10 (delta 2), reused 8 (delta 1), pack-reused 0
+Receiving objects: 100% (10/10), done.
+Resolving deltas: 100% (2/2), done.
+
+✅ Repositorio clonado exitosamente!`;
+            typeText(result, cloneText);
+        }
+
+        function simulateWorkflow() {
+            const result = document.getElementById('workflowResult');
+            const workflowText = `$ echo "Hola mundo" > archivo.txt
+$ git status
+On branch main
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        archivo.txt
+
+$ git add archivo.txt
+$ git status
+On branch main
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   archivo.txt
+
+$ git commit -m "feat: agregar archivo de saludo"
+[main 1a2b3c4] feat: agregar archivo de saludo
+ 1 file changed, 1 insertion(+)
+ create mode 100644 archivo.txt
+
+✅ Workflow completado exitosamente!`;
+            typeText(result, workflowText);
+        }
+
+        function simulateBranching() {
+            const result = document.getElementById('branchResult');
+            const branchText = `$ git branch
+* main
+
+$ git checkout -b feature/nueva-funcionalidad
+Switched to a new branch 'feature/nueva-funcionalidad'
+
+$ echo "Nueva funcionalidad" >> archivo.txt
+$ git add archivo.txt
+$ git commit -m "feat: implementar nueva funcionalidad"
+[feature/nueva-funcionalidad 2b3c4d5] feat: implementar nueva funcionalidad
+ 1 file changed, 1 insertion(+)
+
+$ git checkout main
+Switched to branch 'main'
+
+$ git merge feature/nueva-funcionalidad
+Updating 1a2b3c4..2b3c4d5
+Fast-forward
+ archivo.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+✅ Gestión de ramas completada exitosamente!`;
+            typeText(result, branchText);
+        }
+
+        function selectAnswer(element, isCorrect) {
+            // Remover selección previa
+            document.querySelectorAll('#quiz .quiz-option').forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+            });
+
+            // Marcar respuesta seleccionada
+            if (isCorrect) {
+                element.classList.add('correct');
+                document.getElementById('quizResult').innerHTML =
+                    '<div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent-color); padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 5px solid var(--accent-color);">✅ ¡Correcto! <code>git checkout -b feature</code> es la forma más eficiente de crear y cambiar a una nueva rama en un solo comando.</div>';
+            } else {
+                element.classList.add('incorrect');
+                document.getElementById('quizResult').innerHTML =
+                    '<div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 5px solid #ef4444;">❌ Incorrecto. La respuesta correcta es <code>git checkout -b feature</code>.</div>';
+            }
+        }
+
+        function selectAnswer2(element, isCorrect) {
+            // Remover selección previa
+            document.querySelectorAll('#quizResult2').forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+            });
+
+            // Marcar respuesta seleccionada
+            if (isCorrect) {
+                element.classList.add('correct');
+                document.getElementById('quizResult2').innerHTML =
+                    '<div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent-color); padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 5px solid var(--accent-color);">✅ ¡Correcto! <code>git diff --staged</code> muestra las diferencias de los archivos que están en el staging area.</div>';
+            } else {
+                element.classList.add('incorrect');
+                document.getElementById('quizResult2').innerHTML =
+                    '<div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 5px solid #ef4444;">❌ Incorrecto. La respuesta correcta es <code>git diff --staged</code>.</div>';
+            }
+        }
+
+        // Intersection Observer para animar las tarjetas
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Aplicar animaciones a las tarjetas
+        document.addEventListener('DOMContentLoaded', function () {
+            const cards = document.querySelectorAll('.section-card, .workflow-step, .command-card');
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+
+</html>

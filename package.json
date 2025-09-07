@@ -1,0 +1,61 @@
+{
+    "name": "portafolio-luis-perez",
+    "version": "1.0.0",
+    "description": "Portafolio personal de Luis Pérez - Desarrollador Full Stack",
+    "main": "index.html",
+    "scripts": {
+        "start": "npx live-server --port=3000 --open=/index.html",
+        "dev": "npx live-server --port=3000 --open=/index.html --watch=.",
+        "build": "npm run minify-css && npm run minify-js",
+        "minify-css": "npx clean-css-cli -o css/styles.min.css css/styles.css css/animations.css",
+        "minify-js": "npx terser js/main.js js/animations.js -o js/bundle.min.js -c -m",
+        "optimize-images": "npx imagemin assets/images/*.{jpg,png} --out-dir=assets/images/optimized",
+        "lighthouse": "npx lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html",
+        "validate-html": "npx html-validate index.html",
+        "test": "echo \"No tests specified\" && exit 0"
+    },
+    "keywords": [
+        "portafolio",
+        "desarrollador",
+        "full-stack",
+        "frontend",
+        "backend",
+        "javascript",
+        "react",
+        "nodejs",
+        "html",
+        "css",
+        "responsive"
+    ],
+    "author": {
+        "name": "Luis Pérez",
+        "email": "luis.perez@email.com",
+        "url": "https://github.com/luisperez"
+    },
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/luisperez/portafolio.git"
+    },
+    "homepage": "https://luisperez.dev",
+    "devDependencies": {
+        "live-server": "^1.2.2",
+        "clean-css-cli": "^5.6.2",
+        "terser": "^5.19.4",
+        "imagemin": "^8.0.1",
+        "imagemin-mozjpeg": "^10.0.0",
+        "imagemin-pngquant": "^9.0.2",
+        "lighthouse": "^10.4.0",
+        "html-validate": "^8.7.4"
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not dead",
+        "not ie 11"
+    ],
+    "engines": {
+        "node": ">=14.0.0",
+        "npm": ">=6.0.0"
+    }
+}

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Errores Comunes en Git - Guía Interactiva | Luis Rafael Prado Quitero</title>
+    <meta name="description" content="Guía interactiva para resolver los errores más frecuentes en Git">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .tutorial-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .error-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            margin: var(--spacing-2xl) 0;
+            box-shadow: var(--shadow-md);
+            border-left: 5px solid #ef4444;
+            transition: var(--transition);
+        }
+
+        .error-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .solution-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            margin: var(--spacing-2xl) 0;
+            box-shadow: var(--shadow-md);
+            border-left: 5px solid var(--accent-color);
+            transition: var(--transition);
+        }
+
+        .error-number {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .solution-number {
+            background: linear-gradient(135deg, var(--accent-color), #059669);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #f8f8f2;
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            margin: var(--spacing-md) 0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-block::before {
+            content: "Terminal";
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+        }
+
+        .error-block {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-lg);
+            margin: var(--spacing-md) 0;
+            border-left: 5px solid #ef4444;
+        }
+
+        .success-block {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent-color);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-lg);
+            margin: var(--spacing-md) 0;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .warning-block {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--secondary-color);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-lg);
+            margin: var(--spacing-md) 0;
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .interactive-demo {
+            background: var(--bg-secondary);
+            border: 2px dashed var(--primary-color);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            margin: var(--spacing-2xl) 0;
+            text-align: center;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-xl);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            font-size: var(--font-size-base);
+            margin: var(--spacing-sm);
+            transition: var(--transition);
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .demo-button.error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .demo-button.success {
+            background: linear-gradient(135deg, var(--accent-color), #059669);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background: var(--text-secondary);
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            margin-bottom: var(--spacing-2xl);
+            transition: var(--transition);
+        }
+
+        .back-button:hover {
+            background: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .error-simulator {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            font-family: 'Courier New', monospace;
+            margin: var(--spacing-md) 0;
+            min-height: 100px;
+            overflow-y: auto;
+        }
+
+        .typing-animation {
+            border-right: 2px solid var(--primary-color);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            50% {
+                border-color: var(--primary-color);
+            }
+
+            51%,
+            100% {
+                border-color: transparent;
+            }
+        }
+
+        .quiz-container {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .quiz-question {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-md);
+            font-weight: 600;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+        }
+
+        .quiz-option {
+            background: var(--bg-card);
+            border: 2px solid rgba(99, 102, 241, 0.1);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--accent-color);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .quiz-option.incorrect {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .hero h1 {
+            font-size: var(--font-size-4xl);
+            margin-bottom: var(--spacing-md);
+            color: var(--text-primary);
+        }
+
+        .hero p {
+            font-size: var(--font-size-lg);
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tutorial-container">
+        <a href="../index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Volver al Portafolio
+        </a>
+
+        <div class="hero">
+            <h1>⚠️ Errores Comunes en Git y Cómo Solucionarlos</h1>
+            <p>Guía interactiva para resolver los errores más frecuentes en Git</p>
+        </div>
+
+        <div class="error-card">
+            <div class="error-number">1</div>
+            <h2>❌ Error: Archivo Inexistente</h2>
+            <p><strong>Contexto:</strong> Intentar agregar un archivo que no existe al staging area.</p>
+
+            <div class="interactive-demo">
+                <h3>🎮 Simulador de Error</h3>
+                <button class="demo-button error" onclick="simulateError1()">
+                    <i class="fas fa-exclamation-triangle"></i> Simular Error
+                </button>
+                <div class="error-simulator" id="error1Result"></div>
+            </div>
+
+            <div class="error-block">
+                <strong>❌ Error que verás:</strong><br>
+                <code>fatal: pathspec 'archivo.txt' did not match any files</code>
+            </div>
+        </div>
+
+        <div class="solution-card">
+            <div class="solution-number">1</div>
+            <h2>✅ Solución: Crear el Archivo Primero</h2>
+            <p>Antes de agregar un archivo, asegúrate de que existe:</p>
+
+            <div class="code-block">
+                echo "Este es mi primer archivo" > archivo.txt
+                git add archivo.txt
+                git commit -m "feat: primer archivo agregado"
+            </div>
+
+            <div class="interactive-demo">
+                <h3>🔧 Aplicar Solución</h3>
+                <button class="demo-button success" onclick="applySolution1()">
+                    <i class="fas fa-check"></i> Aplicar Solución
+                </button>
+                <div class="error-simulator" id="solution1Result"></div>
+            </div>
+
+            <div class="success-block">
+                <strong>✅ Resultado:</strong> El archivo se crea, se agrega al staging area y se hace commit
+                exitosamente.
+            </div>
+        </div>
+
+        <div class="error-card">
+            <div class="error-number">2</div>
+            <h2>❌ Error: Rama No Encontrada</h2>
+            <p><strong>Contexto:</strong> Intentar cambiar a una rama que no existe.</p>
+
+            <div class="interactive-demo">
+                <h3>🎮 Simulador de Error</h3>
+                <button class="demo-button error" onclick="simulateError2()">
+                    <i class="fas fa-exclamation-triangle"></i> Simular Error
+                </button>
+                <div class="error-simulator" id="error2Result"></div>
+            </div>
+
+            <div class="error-block">
+                <strong>❌ Error que verás:</strong><br>
+                <code>error: pathspec 'rama-inexistente' did not match any file(s) known to git.</code>
+            </div>
+        </div>
+
+        <div class="solution-card">
+            <div class="solution-number">2</div>
+            <h2>✅ Solución: Crear la Rama Primero</h2>
+            <p>Usa <code>git checkout -b</code> para crear y cambiar a una nueva rama:</p>
+
+            <div class="code-block">
+                git checkout -b nueva-rama
+                echo "Cambio desde nueva-rama" >> archivo.txt
+                git add archivo.txt
+                git commit -m "fix: modificación en nueva-rama"
+            </div>
+
+            <div class="interactive-demo">
+                <h3>🔧 Aplicar Solución</h3>
+                <button class="demo-button success" onclick="applySolution2()">
+                    <i class="fas fa-check"></i> Aplicar Solución
+                </button>
+                <div class="error-simulator" id="solution2Result"></div>
+            </div>
+        </div>
+
+        <div class="error-card">
+            <div class="error-number">3</div>
+            <h2>❌ Error: Merge Conflict</h2>
+            <p><strong>Contexto:</strong> Conflictos al fusionar ramas con cambios en las mismas líneas.</p>
+
+            <div class="interactive-demo">
+                <h3>🎮 Simulador de Error</h3>
+                <button class="demo-button error" onclick="simulateError3()">
+                    <i class="fas fa-exclamation-triangle"></i> Simular Error
+                </button>
+                <div class="error-simulator" id="error3Result"></div>
+            </div>
+
+            <div class="error-block">
+                <strong>❌ Error que verás:</strong><br>
+                <code>Auto-merging archivo.txt<br>
+CONFLICT (content): Merge conflict in archivo.txt<br>
+Automatic merge failed; fix conflicts and then commit the result.</code>
+            </div>
+        </div>
+
+        <div class="solution-card">
+            <div class="solution-number">3</div>
+            <h2>✅ Solución: Resolver Conflictos</h2>
+            <p>Después de resolver conflictos manualmente:</p>
+
+            <div class="code-block">
+                git add archivo_con_conflicto.txt
+                git commit -m "Resolver conflicto"
+            </div>
+
+            <div class="interactive-demo">
+                <h3>🔧 Aplicar Solución</h3>
+                <button class="demo-button success" onclick="applySolution3()">
+                    <i class="fas fa-check"></i> Aplicar Solución
+                </button>
+                <div class="error-simulator" id="solution3Result"></div>
+            </div>
+        </div>
+
+        <div class="error-card">
+            <div class="error-number">4</div>
+            <h2>❌ Error: Push Rechazado</h2>
+            <p><strong>Contexto:</strong> Intentar hacer push cuando el repositorio remoto tiene cambios más recientes.
+            </p>
+
+            <div class="interactive-demo">
+                <h3>🎮 Simulador de Error</h3>
+                <button class="demo-button error" onclick="simulateError4()">
+                    <i class="fas fa-exclamation-triangle"></i> Simular Error
+                </button>
+                <div class="error-simulator" id="error4Result"></div>
+            </div>
+
+            <div class="error-block">
+                <strong>❌ Error que verás:</strong><br>
+                <code>To github.com:usuario/repo.git<br>
+! [rejected]        main -> main (fetch first)<br>
+error: failed to push some refs to 'github.com:usuario/repo.git'</code>
+            </div>
+        </div>
+
+        <div class="solution-card">
+            <div class="solution-number">4</div>
+            <h2>✅ Solución: Pull Antes de Push</h2>
+            <p>Primero descarga los cambios remotos, luego haz push:</p>
+
+            <div class="code-block">
+                git pull origin main
+                git push origin main
+            </div>
+
+            <div class="interactive-demo">
+                <h3>🔧 Aplicar Solución</h3>
+                <button class="demo-button success" onclick="applySolution4()">
+                    <i class="fas fa-check"></i> Aplicar Solución
+                </button>
+                <div class="error-simulator" id="solution4Result"></div>
+            </div>
+        </div>
+
+        <div class="quiz-container">
+            <h2>🧠 Quiz Interactivo</h2>
+            <div class="quiz-question" id="quizQuestion">
+                ¿Qué comando usas para crear una nueva rama y cambiar a ella en un solo paso?
+            </div>
+            <div class="quiz-options">
+                <div class="quiz-option" onclick="selectAnswer(this, false)">
+                    git branch nueva-rama && git checkout nueva-rama
+                </div>
+                <div class="quiz-option" onclick="selectAnswer(this, true)">
+                    git checkout -b nueva-rama
+                </div>
+                <div class="quiz-option" onclick="selectAnswer(this, false)">
+                    git new-branch nueva-rama
+                </div>
+                <div class="quiz-option" onclick="selectAnswer(this, false)">
+                    git create nueva-rama
+                </div>
+            </div>
+            <div id="quizResult"></div>
+        </div>
+
+        <div class="solution-card">
+            <h2>🛠️ Comandos de Recuperación</h2>
+            <p>Comandos útiles para recuperar cambios perdidos:</p>
+
+            <div class="code-block">
+                # Ver historial de acciones
+                git reflog
+
+                # Recuperar archivo eliminado
+                git checkout HEAD -- archivo_eliminado.txt
+
+                # Recuperar commit eliminado
+                git checkout &lt;hash_commit&gt;
+
+                # Limpiar archivos no rastreados (CUIDADO)
+                git clean -n # Ver qué se eliminaría
+                git clean -f # Eliminar archivos no rastreados
+            </div>
+
+            <div class="warning-block">
+                <strong>⚠️ Advertencia:</strong> Los comandos de limpieza son destructivos. Siempre usa <code>-n</code>
+                primero para ver qué se eliminará.
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/animations.js"></script>
+    <script>
+        function typeText(element, text, speed = 50) {
+            element.innerHTML = '';
+            element.classList.add('typing-animation');
+
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                    element.classList.remove('typing-animation');
+                }
+            }, speed);
+        }
+
+        function simulateError1() {
+            const result = document.getElementById('error1Result');
+            const errorText = `$ git add archivo.txt
+fatal: pathspec 'archivo.txt' did not match any files`;
+            typeText(result, errorText);
+        }
+
+        function applySolution1() {
+            const result = document.getElementById('solution1Result');
+            const solutionText = `$ echo "Este es mi primer archivo" > archivo.txt
+$ git add archivo.txt
+$ git commit -m "feat: primer archivo agregado"
+[main 1a2b3c4] feat: primer archivo agregado
+ 1 file changed, 1 insertion(+)
+ create mode 100644 archivo.txt`;
+            typeText(result, solutionText);
+        }
+
+        function simulateError2() {
+            const result = document.getElementById('error2Result');
+            const errorText = `$ git checkout rama-inexistente
+error: pathspec 'rama-inexistente' did not match any file(s) known to git.`;
+            typeText(result, errorText);
+        }
+
+        function applySolution2() {
+            const result = document.getElementById('solution2Result');
+            const solutionText = `$ git checkout -b nueva-rama
+Switched to a new branch 'nueva-rama'
+$ echo "Cambio desde nueva-rama" >> archivo.txt
+$ git add archivo.txt
+$ git commit -m "fix: modificación en nueva-rama"
+[nueva-rama 2b3c4d5] fix: modificación en nueva-rama
+ 1 file changed, 1 insertion(+)`;
+            typeText(result, solutionText);
+        }
+
+        function simulateError3() {
+            const result = document.getElementById('error3Result');
+            const errorText = `$ git merge nueva-rama
+Auto-merging archivo.txt
+CONFLICT (content): Merge conflict in archivo.txt
+Automatic merge failed; fix conflicts and then commit the result.`;
+            typeText(result, errorText);
+        }
+
+        function applySolution3() {
+            const result = document.getElementById('solution3Result');
+            const solutionText = `$ git add archivo_con_conflicto.txt
+$ git commit -m "Resolver conflicto"
+[main 3c4d5e6] Resolver conflicto`;
+            typeText(result, solutionText);
+        }
+
+        function simulateError4() {
+            const result = document.getElementById('error4Result');
+            const errorText = `$ git push origin main
+To github.com:usuario/repo.git
+ ! [rejected]        main -> main (fetch first)
+error: failed to push some refs to 'github.com:usuario/repo.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.`;
+            typeText(result, errorText);
+        }
+
+        function applySolution4() {
+            const result = document.getElementById('solution4Result');
+            const solutionText = `$ git pull origin main
+From github.com:usuario/repo
+ * branch            main     -> FETCH_HEAD
+   Updating 1a2b3c4..3c4d5e6
+Fast-forward
+ archivo.txt | 1 +
+ 1 file changed, 1 insertion(+)
+$ git push origin main
+To github.com:usuario/repo.git
+   3c4d5e6..4d5e6f7  main -> main`;
+            typeText(result, solutionText);
+        }
+
+        function selectAnswer(element, isCorrect) {
+            // Remover selección previa
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+            });
+
+            // Marcar respuesta seleccionada
+            if (isCorrect) {
+                element.classList.add('correct');
+                document.getElementById('quizResult').innerHTML =
+                    '<div class="success-block">✅ ¡Correcto! <code>git checkout -b</code> es la forma más eficiente de crear y cambiar a una nueva rama.</div>';
+            } else {
+                element.classList.add('incorrect');
+                document.getElementById('quizResult').innerHTML =
+                    '<div class="error-block">❌ Incorrecto. La respuesta correcta es <code>git checkout -b nueva-rama</code>.</div>';
+            }
+        }
+
+        // Intersection Observer para animar las tarjetas
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Aplicar animaciones a las tarjetas
+        document.addEventListener('DOMContentLoaded', function () {
+            const cards = document.querySelectorAll('.error-card, .solution-card, .quiz-container');
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+
+</html>

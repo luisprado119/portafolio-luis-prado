@@ -1,0 +1,38 @@
+# Carpeta de imágenes
+
+Esta carpeta contiene todas las imágenes del portafolio:
+
+## Imágenes necesarias:
+- profile.jpg - Foto de perfil principal
+- about.jpg - Imagen para la sección "Sobre Mí"
+- project1.jpg - Imagen del proyecto 1 (E-commerce Platform)
+- project2.jpg - Imagen del proyecto 2 (Task Management App)
+- project3.jpg - Imagen del proyecto 3 (Weather Dashboard)
+
+## Especificaciones recomendadas:
+- Formato: JPG o PNG
+- Resolución: Mínimo 800x600px
+- Tamaño: Máximo 500KB por imagen
+- Optimización: Comprimir para web
+
+## Estructura sugerida:
+```
+assets/
+├── images/
+│   ├── profile.jpg
+│   ├── about.jpg
+│   ├── projects/
+│   │   ├── project1.jpg
+│   │   ├── project2.jpg
+│   │   └── project3.jpg
+│   └── icons/
+│       ├── favicon.ico
+│       └── logo.png
+└── fonts/
+    └── (fuentes personalizadas si las hay)
+```
+
+Para obtener imágenes de placeholder, puedes usar:
+- https://picsum.photos/800/600
+- https://via.placeholder.com/800x600
+- https://unsplash.com (imágenes gratuitas)
