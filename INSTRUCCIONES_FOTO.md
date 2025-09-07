@@ -1,50 +1,54 @@
-# 📸 Instrucciones para Agregar tu Foto
+# 📸 Instrucciones para Agregar tu Foto de Perfil
 
-## 📁 Pasos para agregar tu foto de perfil:
+## 🎯 **Problema Solucionado**
+- ✅ **Ruta corregida** en el HTML: `assets/images/profile.jpg`
+- ✅ **Guía de criptografía agregada** a la sección de guías
 
-### 1. **Copia tu foto**
-- Tu foto actual está en: `C:\Users\Luisp\Downloads\photo_2025-09-07_13-40-30.jpg`
-- Cópiala a la carpeta: `assets/images/`
-- Renómbrala como: `profile.jpg`
+## 📋 **Pasos para Agregar tu Foto:**
 
-### 2. **Comando para copiar (opcional)**
+### **1. Copiar tu foto al proyecto:**
+```
+Desde: C:\Users\Luisp\Downloads\photo_2025-09-07_13-40-30.jpg
+Hacia: C:\Users\Luisp\Desktop\portafolio-luis-git-\assets\images\profile.jpg
+```
+
+### **2. Renombrar el archivo:**
+- **Nombre original:** `photo_2025-09-07_13-40-30.jpg`
+- **Nombre nuevo:** `profile.jpg`
+
+### **3. Verificar la estructura:**
+```
+portafolio-luis-git/
+├── assets/
+│   └── images/
+│       └── profile.jpg  ← Tu foto aquí
+├── index.html
+└── ...
+```
+
+## 🚀 **Después de agregar la foto:**
+
 ```bash
-# Desde la carpeta del portafolio, ejecuta:
-copy "C:\Users\Luisp\Downloads\photo_2025-09-07_13-40-30.jpg" "assets\images\profile.jpg"
+# 1. Agregar los cambios
+git add .
+
+# 2. Hacer commit
+git commit -m "Agregar foto de perfil y guía de criptografía"
+
+# 3. Subir a GitHub
+git push origin main
 ```
 
-### 3. **Actualizar la ruta en el HTML**
-Una vez que copies la foto, actualiza el archivo `index.html`:
+## ✅ **Resultado:**
+- ✅ La foto aparecerá tanto en local como en GitHub Pages
+- ✅ La guía de criptografía estará disponible en la sección "Guías"
+- ✅ Enlace directo a: https://luisprado119.github.io/criptografia/
 
-**Cambiar esta línea:**
-```html
-<img src="C:\Users\Luisp\Downloads\photo_2025-09-07_13-40-30.jpg" alt="Luis Rafael Prado Quitero" id="profile-img">
-```
-
-**Por esta:**
-```html
-<img src="assets/images/profile.jpg" alt="Luis Rafael Prado Quitero" id="profile-img">
-```
-
-### 4. **Especificaciones recomendadas para la foto:**
-- **Formato**: JPG o PNG
-- **Tamaño**: Mínimo 400x400px
-- **Peso**: Máximo 500KB
-- **Estilo**: Foto profesional o semi-profesional
-- **Fondo**: Preferiblemente neutro o con poco contraste
-
-### 5. **Optimización (opcional)**
-Si quieres optimizar la foto para web:
-- Usa herramientas como [TinyPNG](https://tinypng.com/) o [Squoosh](https://squoosh.app/)
-- Redimensiona a 400x400px si es necesario
-- Comprime para reducir el tamaño del archivo
-
-## ✅ **Resultado esperado:**
-Una vez completados estos pasos, tu foto aparecerá correctamente en:
-- La sección Hero (página principal)
-- La tarjeta de perfil
-- Todas las referencias de imagen en el portafolio
+## 🔗 **Enlaces Agregados:**
+- **Guía de Criptografía:** https://luisprado119.github.io/criptografia/
+- **Calculadora:** https://luisprado119.github.io/calculadora/
+- **LinkedIn:** https://www.linkedin.com/in/luis-prado-web3
+- **GitHub:** https://github.com/luisprado119
 
 ---
-
-**Nota**: Actualmente el portafolio está configurado para usar la ruta absoluta de tu foto, pero es mejor usar rutas relativas para que funcione correctamente cuando publiques el portafolio en GitHub Pages o cualquier servidor web.
+*¡Tu portafolio está listo para impresionar! 🎉*
